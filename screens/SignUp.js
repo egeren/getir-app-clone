@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {StyleSheet, Text, View } from 'react-native';
+import {StyleSheet, Text, Touchable, View, TouchableOpacity, Image } from 'react-native';
 import Checkbox from 'expo-checkbox';
 import { GetirDialCodeInput, GetirTextInput } from '../components/GetirInput';
 import {colors, fonts} from '../styles/styles';
@@ -29,7 +29,7 @@ function SignUp({route, navigation}) {
                     <GetirDialCodeInput navigation={navigation} dial_code={phoneDetails.dial_code} flag={phoneDetails.flag} />
                 </View>
                 <View style={styles.phone}>
-                    <GetirTextInput placeholder="Cep telefonu"/>
+                    <GetirTextInput placeholder="Cep telefonu" keyboardType="phone-pad"/>
                 </View>
             </View>
             <View style={styles.userDetails}>
@@ -37,7 +37,7 @@ function SignUp({route, navigation}) {
                     <GetirTextInput placeholder="Ad Soyad"/>
                 </View>
                 <View style={styles.detailInput}>
-                    <GetirTextInput placeholder="E-posta"/>
+                    <GetirTextInput placeholder="E-posta" keyboardType="email-address"/>
                 </View>
             </View>
             <View style={styles.promotionContainer}>
@@ -54,6 +54,31 @@ function SignUp({route, navigation}) {
             </View>
             <View style={styles.buttonContainer}>
                 <GetirButton disabled={true} />
+            </View>
+            <View style={styles.lineContainer}>
+                <View style={styles.line} />
+                <View style={{paddingHorizontal:10}}>
+                    <Text style={{color:colors.gray, fontFamily:fonts.bold}}>veya hesabınızla bağlanın</Text>
+                </View>
+                <View style={styles.line} />
+            </View>
+            <View style={styles.socialContainer}>
+                <TouchableOpacity style={styles.button}>
+                    <Image source={require('../assets/images/google.png')} resizeMode='contain' style={{flex:.1,height:"100%"}}/>
+                    <Text style={styles.socialTexts}>Google</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.button,{backgroundColor:"#1877F2"}]}>
+                    <Image source={require('../assets/images/facebook.png')} resizeMode='contain' style={{flex:.15,height:"100%"}}/>
+                    <Text style={[styles.socialTexts, {color:"white"}]}>Facebook</Text>
+                </TouchableOpacity>
+            </View>
+            <View style={styles.loginText}>
+                <Text style={{color:colors.gray, fontFamily: fonts.bold}}>
+                    Hesabınız var mı? &nbsp;
+                </Text>
+                <Text style={{color:colors.primary, fontFamily: fonts.bold}}>
+                    Giriş Yap
+                </Text>
             </View>
         </View>
         </>
@@ -107,6 +132,46 @@ const styles = StyleSheet.create({
         fontSize:13.5,
     },
     buttonContainer:{
+        paddingTop:20,
+    },
+    lineContainer:{
+        flexDirection:"row",
+        alignItems:"center",
+        justifyContent:"center",
+        paddingTop:30,
+
+    },
+    line:{
+        flex:1,
+        height:1,
+        backgroundColor:colors.gray,
+        paddingHorizontal:10,
+    },
+    socialContainer:{
+        flexDirection:"row",
+        paddingTop:20,
+    },
+    button:{
+        marginHorizontal:5,
+        flex:1,
+        height:50,
+        borderWidth:1,
+        borderColor:"#1877F2",
+        borderRadius:10,
+        justifyContent:"center",
+        flexDirection:"row",
+        alignItems:"center",
+    },
+    socialTexts:{
+        color:colors.gray,
+        flexDirection:"row",
+        fontFamily:fonts.bold,
+        paddingLeft:7
+    },
+    loginText:{
+        alignItems:"center",
+        justifyContent:"center",
+        flexDirection:"row",
         paddingTop:20,
     }
 

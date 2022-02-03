@@ -32,11 +32,12 @@ export const GetirTextInput = (props) => {
     const [inputValue, setValue] = useState('');
     const holderAnim = useRef(new Animated.Value(16)).current
     const input = useRef(null);
+    let keyboardType = props.keyboardType ? props.keyboardType : "default";
 
     return(
         <View style={styles.inputContainer} onTouchStart={()=>input.current.focus()}>
             <Animated.Text style={[styles.placeholderText, {top: holderAnim}]} adjustsFontSizeToFit={true} numberOfLines={1}>{props.placeholder}</Animated.Text>
-            <TextInput ref={input} style={styles.textInput} onFocus={()=>animatePlaceholder(inputValue,holderAnim)} onBlur={()=>animatePlaceholder(inputValue,holderAnim,true)} adjustsFontSizeToFit={true} numberOfLines={1} onChangeText={setValue}/>
+            <TextInput ref={input} style={styles.textInput} keyboardType={keyboardType} onFocus={()=>animatePlaceholder(inputValue,holderAnim)} onBlur={()=>animatePlaceholder(inputValue,holderAnim,true)} adjustsFontSizeToFit={true} numberOfLines={1} onChangeText={setValue}/>
         </View>
     );
 }
