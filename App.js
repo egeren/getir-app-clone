@@ -5,12 +5,12 @@ import store from './store';
 import { TransitionPresets } from '@react-navigation/stack';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import {colors} from './styles/colors.js';
+import {colors} from './styles/styles';
 import { StatusBar } from 'expo-status-bar';
 import Splash from './screens/Splash';
 import SignUp from './screens/SignUp';
 import CountrySelector from './screens/CountrySelector';
-
+import { useFonts } from "expo-font";
 
 const Stack = createNativeStackNavigator();
 
@@ -37,6 +37,15 @@ const screenOptionStyle = {
 }; 
 
 export default function App() {
+  let [fontsLoaded] = useFonts({
+    'Manrope Light' : require('./assets/fonts/manrope/Manrope-Light.ttf'),
+    'Manrope Regular' : require('./assets/fonts/manrope/Manrope-Regular.ttf'),
+    'Manrope Medium' : require('./assets/fonts/manrope/Manrope-Medium.ttf'),
+    'Manrope Bold' : require('./assets/fonts/manrope/Manrope-SemiBold.ttf'),
+  });
+  if(!fontsLoaded){
+    return <Text>Loading...</Text>;
+  }
   return (
     <>
     <StatusBar backgroundColor={colors.darkPurple} />

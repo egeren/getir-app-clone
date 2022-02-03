@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import {countries} from '../data/countries';
-import { colors } from './../styles/colors';
+import { colors } from './../styles/styles';
 
 function CountrySelector({navigation}) {
 

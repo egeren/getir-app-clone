@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import {StyleSheet, Text, View } from 'react-native';
 import Checkbox from 'expo-checkbox';
-import {GetirDialCodeInput, GetirTextInput} from '../components/GetirInput';
-import {colors} from '../styles/colors';
+import { GetirDialCodeInput, GetirTextInput } from '../components/GetirInput';
+import {colors, fonts} from '../styles/styles';
 import { backgroundColor } from 'react-native/Libraries/Components/View/ReactNativeStyleAttributes';
+import { GetirButton } from '../components/GetirButton';
 
 function SignUp({route, navigation}) {
     
@@ -19,6 +20,7 @@ function SignUp({route, navigation}) {
             }) 
         }
     },[route.params]);
+
     return (
         <>
         <View style={styles.container}>
@@ -43,12 +45,15 @@ function SignUp({route, navigation}) {
                     <Checkbox value={isChecked} onValueChange={setChecked} color={colors.primary} style={styles.checkbox}/>
                 </View>
                 <View style={styles.checkboxTextContainer}>
-                    <Text>Getir'in bana özel kampanya, tanıtım ve fırsatlarından haberdar olmak istiyorum.</Text>
+                    <Text style={{fontFamily:fonts.regular, fontSize:13.5}}   numberOfLines={2}>Getir'in bana özel kampanya, tanıtım ve fırsatlarından haberdar olmak istiyorum.</Text>
                 </View>
             </View>
             <View style={styles.privacyTextsContainer}>
-                <Text style={styles.privacyText}>Getir'in bana özel kampanya, tanıtım ve fırsatlarından haberdar olmak istiyorum.</Text>
-                <Text style={styles.privacyText}>Getir'in bana özel kampanya, tanıtım ve fırsatlarından haberdar olmak istiyorum.</Text>
+                <Text style={styles.privacyText}>Kişisel verilerinize dair Aydınlatma Metni için <Text style={{color:colors.primary}}>tıklayınız.</Text></Text>
+                <Text style={styles.privacyText}>Üye olmakla, <Text style={{color:colors.primary}}>Kullanım Koşullarını</Text> onaylamış olursunuz.</Text>
+            </View>
+            <View style={styles.buttonContainer}>
+                <GetirButton disabled={true} />
             </View>
         </View>
         </>
@@ -97,7 +102,12 @@ const styles = StyleSheet.create({
 
     },
     privacyText:{
+        fontFamily:fonts.regular,
         paddingTop:10,
+        fontSize:13.5,
+    },
+    buttonContainer:{
+        paddingTop:20,
     }
 
 });

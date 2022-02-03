@@ -1,4 +1,5 @@
 export const countries = [
+  { name: "Turkey", flag: "🇹🇷", code: "TR", dial_code: "+90" },
   { name: "Afghanistan", flag: "🇦🇫", code: "AF", dial_code: "+93" },
   { name: "Åland Islands", flag: "🇦🇽", code: "AX", dial_code: "+358" },
   { name: "Albania", flag: "🇦🇱", code: "AL", dial_code: "+355" },
@@ -320,7 +321,6 @@ export const countries = [
   { name: "Tonga", flag: "🇹🇴", code: "TO", dial_code: "+676" },
   { name: "Trinidad and Tobago", flag: "🇹🇹", code: "TT", dial_code: "+1868" },
   { name: "Tunisia", flag: "🇹🇳", code: "TN", dial_code: "+216" },
-  { name: "Turkey", flag: "🇹🇷", code: "TR", dial_code: "+90" },
   { name: "Turkmenistan", flag: "🇹🇲", code: "TM", dial_code: "+993" },
   {
     name: "Turks and Caicos Islands",

@@ -1,6 +1,6 @@
 import { Button, Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import LottieView  from 'lottie-react-native'
-import { colors } from '../styles/colors';
+import { colors } from '../styles/styles';
 
 export default function Splash({route, navigation }) {
   return (

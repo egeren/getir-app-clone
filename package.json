@@ -17,6 +17,7 @@
     "@reduxjs/toolkit": "^1.7.1",
     "expo": "~44.0.0",
     "expo-checkbox": "~2.0.0",
+    "expo-font": "^10.0.5",
     "expo-splash-screen": "~0.14.1",
     "expo-status-bar": "~1.2.0",
     "lottie-ios": "^3.2.3",

@@ -1,9 +1,12 @@
+import {useState, useRef} from 'react';
 import { Animated, View,  TextInput, StyleSheet, Text } from 'react-native'
 import { formatPhoneNumber } from 'react-phone-number-input/input'
-import { colors } from '../styles/colors';
-import {useState, useRef} from 'react'
+import { colors, fonts } from '../styles/styles';
 
-function animatePlaceholder(animation, reversed){
+function animatePlaceholder(inputValue, animation, reversed){
+    if(inputValue.length > 0){
+        return;
+    }
     let value = 5;
     reversed ? value = 15 : null;
     Animated.timing(animation,{
@@ -14,10 +17,11 @@ function animatePlaceholder(animation, reversed){
 }
 
 export const GetirDialCodeInput = (props) => {
+
     return(
         <View style={styles.inputContainer} onTouchStart={()=>props.navigation.navigate("CountrySelector")}>
-            <Text style={styles.placeholderTextFocused}>Ülke/Bölge Kodu</Text>
-            <TextInput style={styles.textInput} value={`(${props.dial_code}) ${props.flag}`} editable={false} />
+            <Text style={styles.placeholderTextFocused} adjustsFontSizeToFit={true} numberOfLines={1}>Ülke/Bölge Kodu</Text>
+            <TextInput style={styles.textInput} value={`(${props.dial_code}) ${props.flag}`} editable={false} adjustsFontSizeToFit={true} numberOfLines={1} />
         </View>
     );
 }
@@ -25,15 +29,19 @@ export const GetirDialCodeInput = (props) => {
 export const GetirTextInput = (props) => {
 
     const [style, setStyle] = useState(styles.placeholderText);
+    const [inputValue, setValue] = useState('');
     const holderAnim = useRef(new Animated.Value(16)).current
     const input = useRef(null);
+
     return(
         <View style={styles.inputContainer} onTouchStart={()=>input.current.focus()}>
-            <Animated.Text style={[styles.placeholderText, {top: holderAnim}]}>{props.placeholder}</Animated.Text>
-            <TextInput ref={input} style={styles.textInput} onFocus={()=>animatePlaceholder(holderAnim)} onBlur={()=>animatePlaceholder(holderAnim,true)}/>
+            <Animated.Text style={[styles.placeholderText, {top: holderAnim}]} adjustsFontSizeToFit={true} numberOfLines={1}>{props.placeholder}</Animated.Text>
+            <TextInput ref={input} style={styles.textInput} onFocus={()=>animatePlaceholder(inputValue,holderAnim)} onBlur={()=>animatePlaceholder(inputValue,holderAnim,true)} adjustsFontSizeToFit={true} numberOfLines={1} onChangeText={setValue}/>
         </View>
     );
 }
+
+
 
 
 var styles = StyleSheet.create({
@@ -54,15 +62,18 @@ var styles = StyleSheet.create({
         color: colors.gray,
         justifyContent:"center",
         alignContent:"center",
+        fontFamily:fonts.bold,
     },
     placeholderTextFocused:{
+        display:"flex",
         position:"absolute",
-        fontSize:11,
+        width:"100%",
         top:5,
         left:15,
         color: colors.gray,
         justifyContent:"center",
         alignContent:"center",
+        fontFamily:fonts.bold,
     },
     textInput:{
       color:"#333"
