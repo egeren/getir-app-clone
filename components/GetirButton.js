@@ -9,11 +9,9 @@ export const GetirButton = (props) =>{
         !props.disabled ? setButtonStyle({...styles.button, backgroundColor: colors.lightPurple}) : null;
     },[props.disabled]);
     return(
-        <>
-            <TouchableOpacity style={buttonStyle} disabled={props.disabled} >
+            <TouchableOpacity style={buttonStyle} disabled={props.disabled} onPress={props.onPress}>
                 <Text style={styles.text}>Üye Ol</Text>
             </TouchableOpacity>
-        </>
     );
 }
 

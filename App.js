@@ -8,8 +8,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import {colors} from './styles/styles';
 import { StatusBar } from 'expo-status-bar';
 import Splash from './screens/Splash';
-import SignUp from './screens/SignUp';
-import CountrySelector from './screens/CountrySelector';
+import SignUp from './screens/SignUp/SignUp';
+import CountrySelector from './screens/SignUp/CountrySelector';
 import { useFonts } from "expo-font";
 
 const Stack = createNativeStackNavigator();

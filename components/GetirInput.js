@@ -33,11 +33,12 @@ export const GetirTextInput = (props) => {
     const holderAnim = useRef(new Animated.Value(16)).current
     const input = useRef(null);
     let keyboardType = props.keyboardType ? props.keyboardType : "default";
+    let isValid = props.isValid === undefined || props.isValid === true ? true : false;
 
     return(
-        <View style={styles.inputContainer} onTouchStart={()=>input.current.focus()}>
-            <Animated.Text style={[styles.placeholderText, {top: holderAnim}]} adjustsFontSizeToFit={true} numberOfLines={1}>{props.placeholder}</Animated.Text>
-            <TextInput ref={input} style={styles.textInput} keyboardType={keyboardType} onFocus={()=>animatePlaceholder(inputValue,holderAnim)} onBlur={()=>animatePlaceholder(inputValue,holderAnim,true)} adjustsFontSizeToFit={true} numberOfLines={1} onChangeText={setValue}/>
+        <View style={isValid ? styles.inputContainer : {...styles.inputContainer, borderColor:"#f00"}} onTouchStart={()=>input.current.focus()}>
+            <Animated.Text style={isValid ? [styles.placeholderText, {top: holderAnim}] : {...styles.placeholderText, top: holderAnim, color:"#f00"}} adjustsFontSizeToFit={true} numberOfLines={1}>{props.placeholder}</Animated.Text>
+            <TextInput ref={input} style={styles.textInput} keyboardType={keyboardType} onFocus={()=>animatePlaceholder(inputValue,holderAnim)} onBlur={()=>animatePlaceholder(inputValue,holderAnim,true), props.onBlur} adjustsFontSizeToFit={true} numberOfLines={1} onChangeText={setValue,props.onChangeText}/>
         </View>
     );
 }

@@ -1,48 +1,110 @@
 import React, { useState, useEffect } from 'react';
 import {StyleSheet, Text, Touchable, View, TouchableOpacity, Image } from 'react-native';
 import Checkbox from 'expo-checkbox';
-import { GetirDialCodeInput, GetirTextInput } from '../components/GetirInput';
-import {colors, fonts} from '../styles/styles';
+import { GetirDialCodeInput, GetirTextInput } from '../../components/GetirInput';
+import {colors, fonts} from '../../styles/styles';
 import { backgroundColor } from 'react-native/Libraries/Components/View/ReactNativeStyleAttributes';
-import { GetirButton } from '../components/GetirButton';
+import { GetirButton } from '../../components/GetirButton';
+import validator from 'validator';
 
 function SignUp({route, navigation}) {
     
-    const [phoneDetails, setPhoneDetails] = useState({ dial_code: '+90', flag: '🇹🇷' });
-    const [isChecked, setChecked] = useState(false);
+    const [button, setButton] = useState(true);
+    const [checkbox, setCheckbox] = useState(false);
+    const [signUpData, setSignUpData] = useState({
+        dial_code:{
+            value: '+90',
+            flag: '🇹🇷',
+            isValid: true,
+        },
+        phone:{
+            value: '',
+            isValid: undefined,
+        },
+        name:{
+            value: '',
+            isValid: undefined,
+        },
+        email:{
+            value: '',
+            isValid: undefined,
+        }
+    });
 
     useEffect(() => {
-        if(route.params)
+        if(route.params) 
         {
-            setPhoneDetails({
-                dial_code: route.params.dial_code,
-                flag: route.params.flag
-            }) 
+            setSignUpData(
+                {
+                    ...signUpData,
+                    dial_code:{
+                        value:route.params.dial_code,
+                        flag: route.params.flag,
+                    }
+                }
+            );
         }
     },[route.params]);
+
+    useEffect(()=>{
+        if(button && signUpData.phone.value.length > 0 && signUpData.name.value.length > 0 && signUpData.email.value.length > 0)
+        {
+            setButton(false);
+        }
+        else if(!button)
+        {
+            setButton(true);
+        }
+    },[signUpData]);
+
+    function validate(type){
+        let isValid = false;
+        switch(type){
+            case 'phone':
+                let _phone = signUpData.phone.value.replace(/\s/g, "");
+                isValid = validator.isMobilePhone(signUpData.dial_code.value + _phone , "any",  {strictMode: true})
+                setSignUpData({...signUpData, phone:{value: signUpData.phone.value, isValid: isValid}});
+                break;
+            case 'name':
+                let statement1 = signUpData.name.value.split(" ").length > 1;
+                let statement2 = signUpData.name.value.split(" ")[1]?.length > 0;
+                let statement3 = validator.isAlpha(signUpData.name.value.replace(/\s/g, ""));
+                isValid = statement1 && statement2 && statement3;
+                setSignUpData({...signUpData, name:{value: signUpData.name.value, isValid: isValid}});
+                break;
+            case 'email':
+                isValid = validator.isEmail(signUpData.email.value)
+                setSignUpData({...signUpData, email:{value: signUpData.email.value, isValid: isValid}});
+                break;
+        }
+    }
+
+    function signUpButtonHandler(){
+        console.log(Object.values(signUpData).every(item => item.isValid));
+    }
 
     return (
         <>
         <View style={styles.container}>
             <View style={styles.phonesContainer}>
                 <View style={styles.dialCode}>
-                    <GetirDialCodeInput navigation={navigation} dial_code={phoneDetails.dial_code} flag={phoneDetails.flag} />
+                    <GetirDialCodeInput navigation={navigation} dial_code={signUpData.dial_code.value} flag={signUpData.dial_code.flag}/>
                 </View>
                 <View style={styles.phone}>
-                    <GetirTextInput placeholder="Cep telefonu" keyboardType="phone-pad"/>
+                    <GetirTextInput placeholder="Cep telefonu" keyboardType="phone-pad" isValid={signUpData.phone.isValid} onChangeText={(value)=>setSignUpData({...signUpData, phone:{value: value}})} onBlur={()=>validate("phone")}/>
                 </View>
             </View>
             <View style={styles.userDetails}>
                 <View style={styles.detailInput}>
-                    <GetirTextInput placeholder="Ad Soyad"/>
+                    <GetirTextInput placeholder="Ad Soyad" isValid={signUpData.name.isValid} onChangeText={(value)=>setSignUpData({...signUpData, name:{value: value}})} onBlur={()=>validate("name")}/>
                 </View>
                 <View style={styles.detailInput}>
-                    <GetirTextInput placeholder="E-posta" keyboardType="email-address"/>
+                    <GetirTextInput placeholder="E-posta" keyboardType="email-address" isValid={signUpData.email.isValid} onChangeText={(value)=>setSignUpData({...signUpData, email:{value: value}})} onBlur={()=>validate("email")}/>
                 </View>
             </View>
             <View style={styles.promotionContainer}>
-                <View style={styles.checkboxContainer}>
-                    <Checkbox value={isChecked} onValueChange={setChecked} color={colors.primary} style={styles.checkbox}/>
+                <View style={styles.checkboxContainer} onTouchEnd={setCheckbox(!checkbox)}>
+                    <Checkbox value={checkbox} color={colors.primary} style={styles.checkbox}/>
                 </View>
                 <View style={styles.checkboxTextContainer}>
                     <Text style={{fontFamily:fonts.regular, fontSize:13.5}}   numberOfLines={2}>Getir'in bana özel kampanya, tanıtım ve fırsatlarından haberdar olmak istiyorum.</Text>
@@ -53,7 +115,7 @@ function SignUp({route, navigation}) {
                 <Text style={styles.privacyText}>Üye olmakla, <Text style={{color:colors.primary}}>Kullanım Koşullarını</Text> onaylamış olursunuz.</Text>
             </View>
             <View style={styles.buttonContainer}>
-                <GetirButton disabled={true} />
+                <GetirButton disabled={button} onPress={()=>{signUpButtonHandler()}}/>
             </View>
             <View style={styles.lineContainer}>
                 <View style={styles.line} />
@@ -64,11 +126,11 @@ function SignUp({route, navigation}) {
             </View>
             <View style={styles.socialContainer}>
                 <TouchableOpacity style={styles.button}>
-                    <Image source={require('../assets/images/google.png')} resizeMode='contain' style={{flex:.1,height:"100%"}}/>
+                    <Image source={require('../../assets/images/google.png')} resizeMode='contain' style={{flex:.1,height:"100%"}}/>
                     <Text style={styles.socialTexts}>Google</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.button,{backgroundColor:"#1877F2"}]}>
-                    <Image source={require('../assets/images/facebook.png')} resizeMode='contain' style={{flex:.15,height:"100%"}}/>
+                    <Image source={require('../../assets/images/facebook.png')} resizeMode='contain' style={{flex:.15,height:"100%"}}/>
                     <Text style={[styles.socialTexts, {color:"white"}]}>Facebook</Text>
                 </TouchableOpacity>
             </View>
@@ -96,10 +158,10 @@ const styles = StyleSheet.create({
         justifyContent:"space-between",
     },
     dialCode:{
-        flex:.24,
+        flex:.33,
     },
     phone:{
-        flex:.74,
+        flex:.64,
     },
     userDetails:{
 
@@ -139,7 +201,6 @@ const styles = StyleSheet.create({
         alignItems:"center",
         justifyContent:"center",
         paddingTop:30,
-
     },
     line:{
         flex:1,
