@@ -103,7 +103,7 @@ function SignUp({route, navigation}) {
                 </View>
             </View>
             <View style={styles.promotionContainer}>
-                <View style={styles.checkboxContainer} onTouchEnd={setCheckbox(!checkbox)}>
+                <View style={styles.checkboxContainer} onTouchEnd={()=>setCheckbox(!checkbox)}>
                     <Checkbox value={checkbox} color={colors.primary} style={styles.checkbox}/>
                 </View>
                 <View style={styles.checkboxTextContainer}>
