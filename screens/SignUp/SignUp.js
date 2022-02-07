@@ -3,9 +3,9 @@ import {StyleSheet, Text, Touchable, View, TouchableOpacity, Image } from 'react
 import Checkbox from 'expo-checkbox';
 import { GetirDialCodeInput, GetirTextInput } from '../../components/GetirInput';
 import {colors, fonts} from '../../styles/styles';
-import { backgroundColor } from 'react-native/Libraries/Components/View/ReactNativeStyleAttributes';
 import { GetirButton } from '../../components/GetirButton';
 import validator from 'validator';
+import parsePhoneNumber from 'libphonenumber-js'
 
 function SignUp({route, navigation}) {
     
@@ -83,6 +83,12 @@ function SignUp({route, navigation}) {
         console.log(Object.values(signUpData).every(item => item.isValid));
     }
 
+    function handlePhoneText(value){
+        const phoneNumber = parsePhoneNumber(value);
+        console.log(phoneNumber);
+        setSignUpData({...signUpData, phone:{value: value}})
+    }
+
     return (
         <>
         <View style={styles.container}>
@@ -91,7 +97,7 @@ function SignUp({route, navigation}) {
                     <GetirDialCodeInput navigation={navigation} dial_code={signUpData.dial_code.value} flag={signUpData.dial_code.flag}/>
                 </View>
                 <View style={styles.phone}>
-                    <GetirTextInput placeholder="Cep telefonu" keyboardType="phone-pad" isValid={signUpData.phone.isValid} onChangeText={(value)=>setSignUpData({...signUpData, phone:{value: value}})} onBlur={()=>validate("phone")}/>
+                    <GetirTextInput placeholder="Cep telefonu" keyboardType="phone-pad" isValid={signUpData.phone.isValid} onChangeText={(value)=> handlePhoneText(value)} onBlur={()=>validate("phone")}/>
                 </View>
             </View>
             <View style={styles.userDetails}>
